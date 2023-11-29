@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 include_once "config.php";
@@ -22,10 +21,10 @@ include_once "config.php";
 	<div class="container-fluid" id="main-container">
 		<div class="chat-row h-100">
             <input type='hidden' name='userid' id='userid' value='<?php echo $_SESSION['id']; ?>'>
-			<div class="col-xs-12 col-sm-5 col-md-4 d-flex flex-column" id="chat-list-area" style="position:relative;">
+			<div class="col-xs-12 col-sm-5 col-md-4 d-flex flex-column h-100" id="chat-list-area" style="position:relative;">
 				<!-- Navbar Left-->
 				<div class="chat-row d-flex flex-row align-items-center p-2" id="navbar">
-					<img src="./images/images.jpg" alt="Profile Photo" class="img-fluid rounded-circle mx-2 mr-2" style="height:50px; cursor:pointer;" id="display-pic">
+					<img src="./assets/images/images.jpg" alt="Profile Photo" class="img-fluid rounded-circle mx-2 mr-2" style="height:50px; cursor:pointer;" id="display-pic">
                     <?php 
                     $sql = "select * from users where chat_user_id = '$_SESSION[id]'";
                     $sqlexe = mysqli_query($conn,$sql);
@@ -42,7 +41,7 @@ include_once "config.php";
 					</div>
 				</div>
 				<!-- Chat List -->
-				<div class="chat-row" id="chat-list" style="overflow:auto;">
+				<div class="chat-row" id="chat-list" style="overflow:auto;" max-height='700px'>
                    
                 </div>				
 			</div>
@@ -56,7 +55,7 @@ include_once "config.php";
 				<!-- Input -->
 				<div class="justify-self-end align-items-center flex-row" id="input-area1" style='display:none'>
 					<input type='hidden' name='receiverid' id='receiverid'>
-					<i class="far fa-smile text-muted px-4" style="font-size:24px; cursor:pointer;"></i>
+					<!-- <i class="far fa-smile text-muted px-4" style="font-size:24px; cursor:pointer;"></i> -->
 					<input type="text" name="message" id="input" placeholder="Type a message" class="flex-grow-1 border-0 px-3 py-2 my-3 rounded-20 -shadow-sm; word-wrap: break-word;">
 					<i class="fa fa-paper-plane text-muted px-4" style="cursor:pointer;" onclick="sendMessage()"></i>
 				</div>
@@ -64,74 +63,9 @@ include_once "config.php";
 			
 		</div>
 	</div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var userEventSource = new EventSource('get_user.php?q=' + document.getElementById("userid").value);
+    
 
-        userEventSource.onmessage = function(event) {
-            const chatContainer = document.getElementById("chat-list");
-            chatContainer.innerHTML = "";
-            
-            document.getElementById("chat-list").innerHTML += event.data + "<br>";
-        };
-
-    });
-</script>
-<script>
-	var currentEventSource = null;
-    var currentData = "";
-	function chatfunc(id){
-		if (currentEventSource) {
-            currentEventSource.close();
-        }
-debugger;
-        document.getElementById("receiverid").value = id;
-
-        // Create a new EventSource for the current chat
-        currentEventSource = new EventSource('chat.php?q=' + id);
-
-        currentEventSource.onmessage = function(event) {
-            const newData = event.data; // Get the new data from the event
-
-            // Check if the new data is different from the current data
-            if (newData !== currentData) {
-                // Update the current data
-                currentData = newData;
-
-                const chatContainer = document.getElementById("messages");
-
-                // Append new messages to the existing chat container
-                chatContainer.innerHTML = currentData;
-
-               chat = document.getElementById("messages");
-            chat.scrollTop = chat.scrollHeight;
-            }
-        };
-
-        document.getElementById("input-area1").style.display = 'flex';
-	}
-</script>
-<script>
-	function sendMessage(){
-		    var msg = document.getElementById('input').value;
-		    var senderid = document.getElementById("userid").value;
-            var receiverid = document.getElementById("receiverid").value; // Make sure you have an element with id 'receiverid' in your HTML
-            
-
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("input").value = '';
-                    chat = document.getElementById("messages");
-            chat.scrollTop = chat.scrollHeight;
-                }
-            };
-            xmlhttp.open("GET", "insertchat.php?senderid=" + senderid + "&receiverid=" + receiverid + "&msg=" + encodeURIComponent(msg), true);
-            xmlhttp.send();
-	}
-	</script>
-
-
+	<script src="./assets/js/script.js"></script>
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

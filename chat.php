@@ -22,7 +22,7 @@ if (isset($_REQUEST['q'])) {
 
     echo "data: <div class='chat-row d-flex flex-row align-items-center p-2 m-0 w-100' id='navbar' style='border-bottom: 1px solid #d7d0ca; position: fixed; top: 0; width: 100%; z-index: 1;'>\n";
 echo "data:     <a href='#'>\n";
-echo "data:         <img src='./images/images.jpg' alt='Profile Photo' class='img-fluid rounded-circle mx-2 mr-2' style='height:50px;' id='pic'>\n";
+echo "data:         <img src='./assets/images/images.jpg' alt='Profile Photo' class='img-fluid rounded-circle mx-2 mr-2' style='height:50px;' id='pic'>\n";
 echo "data:     </a>\n";
 echo "data:     <div class='d-flex flex-column'>\n";
 echo "data:         <div class='text-black font-weight-bold-apagar' id='name'>{$userDetails['name']}</div>\n";
@@ -44,7 +44,7 @@ echo "data: </div>\n";
         echo "data: <div class='d-flex flex-column messages-bg' id='messages'>\n";
         while ($chatDetails = mysqli_fetch_assoc($chatResult)) {
             $messageDate = date('Y-m-d',$chatDetails['msg_time']);
-            
+            $color = ($chatDetails['read_status'] == '0') ? 'gray' : 'green';
             // Display date only once
             if ($messageDate != $currentDate) {
                 echo "data: <div class='dt-message mx-auto my-2 bg-primary text-white small py-1 px-2 rounded'>\n";
@@ -62,7 +62,7 @@ echo "data: </div>\n";
                 echo "data: <div class='d-flex flex-row'>\n";
                 echo "data: <div class='body mr-2'>{$chatDetails['msg']}</div>\n";
                 echo "data: <div class='time ml-auto small text-right flex-shrink-0 align-self-end text-muted' style='position: relative; top: 7px; font-size: 11px;'>\n";
-                echo "data: " . date('h:i', $chatDetails['msg_time']) . " <i class='fas fa-check-circle' style='color:{$clr}'></i>\n";
+                echo "data: " . date('h:i', $chatDetails['msg_time']) . " <i class='fa fa-check-circle' style='color:{$color}'></i>\n";
                 echo "data: </div>\n";
                 echo "data: </div>\n";
                 echo "data: </div>\n";

@@ -7,15 +7,8 @@ include_once "./config.php";
 if (isset($_REQUEST['q'])) {
     
     $id = $_REQUEST['q'];
-    if ($_SESSION['role'] == 'admin') {
-        $users = "SELECT * FROM users WHERE chat_user_id != '$id' AND role = 'manager'";
-    } elseif ($_SESSION['role'] == 'manager') {
-        $users = "SELECT * FROM users WHERE (role = 'team_lead' AND mg_id = '$id') OR (role = 'admin')";
-    } elseif ($_SESSION['role'] == 'team_lead') {
-        $users = "SELECT * FROM users WHERE (role = 'agent' AND tl_id = '$id') OR (chat_user_id = (SELECT mg_id FROM users WHERE chat_user_id = '$id'))";
-    } elseif ($_SESSION['role'] == 'agent') {
-        $users = "SELECT * FROM users WHERE (chat_user_id = (SELECT tl_id FROM users WHERE chat_user_id = '$id'))";
-    }
+        $users = "SELECT * FROM users WHERE chat_user_id != '$id'";
+   
 
     $userqryexe = mysqli_query($conn, $users);
     $count = mysqli_num_rows($userqryexe);
@@ -33,6 +26,7 @@ if (isset($_REQUEST['q'])) {
             $msgexe = mysqli_query($conn,$msgs);
             $no = 0;
             $lastmsg = '';
+            $lastmsgtime = '';
             while($msgdtls = mysqli_fetch_assoc($msgexe)){
                 $lastmsg = $msgdtls['msg'];
                 $lastmsgtime = date("h:i",$msgdtls['msg_time']);
@@ -43,7 +37,7 @@ if (isset($_REQUEST['q'])) {
                 }
             }
             echo "data: <div id='chat-item' class='chat-list-item d-flex flex-row w-100 p-2 border-bottom-2 _border-bottom' onclick='chatfunc(" . $row['chat_user_id'] . ")'>\n";
-            echo "data: <img src='./images/images.jpg' alt='Profile Photo' class='img-fluid rounded-circle mx-2 mr-2' style='height:50px;'>\n";
+            echo "data: <img src='./assets/images/images.jpg' alt='Profile Photo' class='img-fluid rounded-circle mx-2 mr-2' style='height:50px;'>\n";
             echo "data: <div class='w-50'>\n";
             echo "data: <div class='name'>{$row["name"]}</div>\n";
             if($status == 0 && $senderid != $_SESSION['id']){
