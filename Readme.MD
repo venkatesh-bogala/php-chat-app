@@ -1,5 +1,4 @@
 # Simple PHP Chat Application
-
 This is a simple PHP-based chat application using MySQL for data storage. The application allows users to engage in real-time chat conversations. Note that there is no registration page, and users need to be manually added to the database.
 
 ## Features
